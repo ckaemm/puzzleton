@@ -48,8 +48,9 @@ class GameManager extends ChangeNotifier {
 
   double get progress => totalWords > 0 ? _foundCount / totalWords : 0;
 
-  /// Oyunu başlat
-  void startGame(GameConfig gameConfig) {
+  /// Oyunu başlat.
+  /// [random] verilirse deterministik ızgara oluşturulur (günlük challenge için).
+  void startGame(GameConfig gameConfig, {Random? random}) {
     config = gameConfig;
     _secondsLeft = config.timeLimitSeconds;
     _score = 0;
@@ -63,7 +64,7 @@ class GameManager extends ChangeNotifier {
     lastFoundWord = null;
 
     // Izgara oluştur
-    final result = GridService.generateGrid(config);
+    final result = GridService.generateGrid(config, random: random);
     grid = result.grid;
     placedWords = result.placedWords;
 

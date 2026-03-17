@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../models/game_config.dart';
+import '../services/daily_challenge_service.dart';
+import '../services/theme_service.dart';
 import '../theme/app_theme.dart';
+import 'daily_challenge_screen.dart';
 import 'game_screen.dart';
 import 'leaderboard_screen.dart';
 
@@ -18,6 +21,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late Animation<double> _titleFade;
   late AnimationController _pulseController;
   late Animation<double> _pulseAnim;
+
+  bool _dailyPlayed = false;
+  int? _dailyScore;
 
   @override
   void initState() {
@@ -39,6 +45,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _pulseAnim = Tween<double>(begin: 0.95, end: 1.05).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
+
+    _loadDailyStatus();
+  }
+
+  Future<void> _loadDailyStatus() async {
+    final played = await DailyChallengeService.hasPlayedToday;
+    final score = await DailyChallengeService.todayScore;
+    if (mounted) {
+      setState(() {
+        _dailyPlayed = played;
+        _dailyScore = score;
+      });
+    }
   }
 
   @override
@@ -63,14 +82,43 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
+  void _openDailyChallenge() async {
+    await Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => DailyChallengeScreen(
+          playerName: widget.playerName,
+        ),
+        transitionsBuilder: (_, anim, __, child) {
+          return FadeTransition(opacity: anim, child: child);
+        },
+        transitionDuration: const Duration(milliseconds: 400),
+      ),
+    );
+    // Ekrandan dönünce durumu yenile
+    _loadDailyStatus();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = ThemeService.instance.isDarkMode;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
+              // ── Tema Toggle ──
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: () => ThemeService.instance.toggleTheme(),
+                  icon: Icon(
+                    isDark ? Icons.wb_sunny_rounded : Icons.nightlight_round,
+                  ),
+                  color: AppTheme.textSecondaryColor(context),
+                ),
+              ),
               const Spacer(flex: 2),
               // ── Logo & Başlık ──
               FadeTransition(
@@ -112,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       'Türkçe Kelime Bul',
                       style: TextStyle(
                         fontSize: 16,
-                        color: AppTheme.textSecondary,
+                        color: AppTheme.textSecondaryColor(context),
                         letterSpacing: 2,
                       ),
                     ),
@@ -137,17 +185,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
               ),
               const Spacer(flex: 2),
+              // ── Günlük Challenge Kartı ──
+              FadeTransition(
+                opacity: _titleFade,
+                child: _DailyChallengeCard(
+                  played: _dailyPlayed,
+                  score: _dailyScore,
+                  dateLabel: DailyChallengeService.todayLabel,
+                  onTap: _openDailyChallenge,
+                ),
+              ),
+              const SizedBox(height: 20),
               // ── Zorluk Seçimi ──
               FadeTransition(
                 opacity: _titleFade,
                 child: Column(
                   children: [
-                    const Text(
+                    Text(
                       'Zorluk Seviyesi Seç',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: AppTheme.textPrimary,
+                        color: AppTheme.textPrimaryColor(context),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -193,6 +252,142 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 }
 
+// ── Günlük Challenge Kartı ──
+class _DailyChallengeCard extends StatelessWidget {
+  final bool played;
+  final int? score;
+  final String dateLabel;
+  final VoidCallback onTap;
+
+  const _DailyChallengeCard({
+    required this.played,
+    required this.score,
+    required this.dateLabel,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [AppTheme.primaryTeal, AppTheme.darkTeal],
+            ),
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.primaryTeal.withValues(alpha: 0.35),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              // İkon
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.calendar_today_rounded,
+                  color: Colors.white,
+                  size: 26,
+                ),
+              ),
+              const SizedBox(width: 14),
+              // Metin
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Günlük Challenge',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      dateLabel,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white.withValues(alpha: 0.8),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Badge
+              if (played)
+                _CompletedBadge(score: score)
+              else
+                const Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: Colors.white,
+                  size: 18,
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CompletedBadge extends StatelessWidget {
+  final int? score;
+
+  const _CompletedBadge({this.score});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.4),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.check_circle_rounded,
+              color: Colors.white, size: 16),
+          if (score != null) ...[
+            const SizedBox(height: 2),
+            Text(
+              '$score',
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+// ── Zorluk Kartı ──
 class _DifficultyCard extends StatelessWidget {
   final GameConfig config;
   final VoidCallback onTap;
@@ -235,7 +430,7 @@ class _DifficultyCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           decoration: BoxDecoration(
-            color: AppTheme.cardDark,
+            color: AppTheme.cardColor(context),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: _accentColor.withValues(alpha: 0.3),
@@ -261,9 +456,9 @@ class _DifficultyCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       '${config.wordCount} kelime · $timeText · ${config.gridSize}×${config.gridSize}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
-                        color: AppTheme.textSecondary,
+                        color: AppTheme.textSecondaryColor(context),
                       ),
                     ),
                   ],

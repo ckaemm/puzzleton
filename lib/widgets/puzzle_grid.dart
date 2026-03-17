@@ -141,7 +141,7 @@ class _PuzzleGridState extends State<PuzzleGrid>
                 width: constraints.maxWidth,
                 height: constraints.maxWidth,
                 decoration: BoxDecoration(
-                  color: AppTheme.cardDark,
+                  color: AppTheme.cardColor(context),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: AppTheme.primaryTeal.withValues(alpha: 0.2),
@@ -197,7 +197,7 @@ class _PuzzleGridState extends State<PuzzleGrid>
       textColor = AppTheme.gold;
     } else {
       bgColor = Colors.transparent;
-      textColor = AppTheme.textPrimary.withValues(alpha: 0.85);
+      textColor = AppTheme.textPrimaryColor(context).withValues(alpha: 0.85);
     }
 
     double scale = 1.0;
@@ -214,7 +214,7 @@ class _PuzzleGridState extends State<PuzzleGrid>
           border: Border.all(
             color: isHint
                 ? AppTheme.gold.withValues(alpha: _hintPulseAnim.value * 0.5)
-                : AppTheme.cardLight.withValues(alpha: 0.3),
+                : AppTheme.cardSurface(context).withValues(alpha: 0.3),
             width: isHint ? 1.5 : 0.5,
           ),
         ),

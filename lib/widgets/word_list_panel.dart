@@ -31,7 +31,7 @@ class WordListPanel extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppTheme.cardDark,
+            color: AppTheme.cardColor(context),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: AppTheme.primaryTeal.withValues(alpha: 0.15),
@@ -67,7 +67,7 @@ class WordListPanel extends StatelessWidget {
                     chipColor = AppTheme
                         .wordColors[pw.colorIndex! % AppTheme.wordColors.length];
                   } else {
-                    chipColor = AppTheme.textSecondary;
+                    chipColor = AppTheme.textSecondaryColor(context);
                   }
 
                   return AnimatedContainer(
@@ -77,7 +77,7 @@ class WordListPanel extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: found
                           ? chipColor.withValues(alpha: 0.2)
-                          : AppTheme.cardLight.withValues(alpha: 0.5),
+                          : AppTheme.cardSurface(context).withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         color:
@@ -90,7 +90,7 @@ class WordListPanel extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: found ? FontWeight.bold : FontWeight.w400,
-                        color: found ? chipColor : AppTheme.textSecondary,
+                        color: found ? chipColor : AppTheme.textSecondaryColor(context),
                         decoration: found ? TextDecoration.lineThrough : null,
                         decorationColor: chipColor,
                         decorationThickness: 2,

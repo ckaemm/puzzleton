@@ -139,11 +139,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   'Türkçe Kelime Bul',
                   style: TextStyle(
                     fontSize: 14,
-                    color: AppTheme.textSecondary,
+                    color: AppTheme.textSecondaryColor(context),
                     letterSpacing: 2,
                   ),
                 ),
@@ -153,12 +153,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   position: _slideAnim,
                   child: Column(
                     children: [
-                      const Text(
+                      Text(
                         'Oyuncu Adını Gir',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: AppTheme.textPrimary,
+                          color: AppTheme.textPrimaryColor(context),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -168,16 +168,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           controller: _nameController,
                           textCapitalization: TextCapitalization.words,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.textPrimary,
+                            color: AppTheme.textPrimaryColor(context),
                             letterSpacing: 1,
                           ),
                           decoration: InputDecoration(
                             hintText: 'Adın...',
                             hintStyle: TextStyle(
-                              color: AppTheme.textSecondary.withValues(alpha: 0.5),
+                              color: AppTheme.textSecondaryColor(context).withValues(alpha: 0.5),
                               fontWeight: FontWeight.normal,
                             ),
                             prefixIcon: const Icon(
@@ -185,7 +185,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                               color: AppTheme.primaryTeal,
                             ),
                             filled: true,
-                            fillColor: AppTheme.cardDark,
+                            fillColor: AppTheme.cardColor(context),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: BorderSide.none,

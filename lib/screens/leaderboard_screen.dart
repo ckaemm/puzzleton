@@ -41,15 +41,15 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: AppTheme.cardDark,
+        backgroundColor: AppTheme.cardColor(ctx),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text(
+        title: Text(
           'Skorları Sil',
-          style: TextStyle(color: AppTheme.textPrimary),
+          style: TextStyle(color: AppTheme.textPrimaryColor(ctx)),
         ),
-        content: const Text(
+        content: Text(
           'Tüm skor kayıtlarını silmek istediğine emin misin?',
-          style: TextStyle(color: AppTheme.textSecondary),
+          style: TextStyle(color: AppTheme.textSecondaryColor(ctx)),
         ),
         actions: [
           TextButton(
@@ -113,22 +113,22 @@ class _LeaderboardScreenState extends State<LeaderboardScreen>
           Icon(
             Icons.emoji_events_outlined,
             size: 72,
-            color: AppTheme.textSecondary.withValues(alpha: 0.4),
+            color: AppTheme.textSecondaryColor(context).withValues(alpha: 0.4),
           ),
           const SizedBox(height: 16),
-          const Text(
+          Text(
             'Henüz skor yok',
             style: TextStyle(
               fontSize: 18,
-              color: AppTheme.textSecondary,
+              color: AppTheme.textSecondaryColor(context),
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Oyun oynayarak skor tablosunu doldur!',
             style: TextStyle(
               fontSize: 14,
-              color: AppTheme.textSecondary,
+              color: AppTheme.textSecondaryColor(context),
             ),
           ),
         ],
@@ -220,12 +220,12 @@ class _ScoreRow extends StatelessWidget {
       decoration: BoxDecoration(
         color: rank <= 3
             ? _rankColor.withValues(alpha: 0.08)
-            : AppTheme.cardDark,
+            : AppTheme.cardColor(context),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: rank <= 3
               ? _rankColor.withValues(alpha: 0.25)
-              : AppTheme.cardLight.withValues(alpha: 0.3),
+              : AppTheme.cardSurface(context).withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -257,15 +257,15 @@ class _ScoreRow extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
-                    color: rank <= 3 ? _rankColor : AppTheme.textPrimary,
+                    color: rank <= 3 ? _rankColor : AppTheme.textPrimaryColor(context),
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   '$_difficultyEmoji ${score.difficulty} · ${score.foundCount}/${score.totalWords} kelime · $_timeAgo',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
-                    color: AppTheme.textSecondary,
+                    color: AppTheme.textSecondaryColor(context),
                   ),
                 ),
               ],

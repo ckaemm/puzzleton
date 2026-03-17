@@ -29,7 +29,7 @@ class GameTimer extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           decoration: BoxDecoration(
-            color: AppTheme.cardDark,
+            color: AppTheme.cardColor(context),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: timerColor.withValues(alpha: 0.3),

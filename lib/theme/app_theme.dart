@@ -34,6 +34,25 @@ class AppTheme {
     Color(0xFFD4E157),
   ];
 
+  // ── Tema-duyarlı renk yardımcıları ──
+  static bool _isDark(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark;
+
+  static Color surfaceColor(BuildContext context) =>
+      _isDark(context) ? surface : const Color(0xFFF5F5F5);
+
+  static Color cardColor(BuildContext context) =>
+      _isDark(context) ? cardDark : Colors.white;
+
+  static Color cardSurface(BuildContext context) =>
+      _isDark(context) ? cardLight : const Color(0xFFEEEEEE);
+
+  static Color textPrimaryColor(BuildContext context) =>
+      _isDark(context) ? textPrimary : const Color(0xFF212121);
+
+  static Color textSecondaryColor(BuildContext context) =>
+      _isDark(context) ? textSecondary : const Color(0xFF757575);
+
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
@@ -77,6 +96,56 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: cardDark,
         elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+    );
+  }
+
+  static ThemeData get lightTheme {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+      colorScheme: const ColorScheme.light(
+        primary: primaryTeal,
+        secondary: darkTeal,
+        surface: Colors.white,
+        error: errorRed,
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onSurface: Color(0xFF212121),
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: TextStyle(
+          color: Color(0xFF212121),
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.2,
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryTeal,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1,
+          ),
+        ),
+      ),
+      cardTheme: CardThemeData(
+        color: Colors.white,
+        elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),

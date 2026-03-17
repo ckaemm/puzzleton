@@ -106,7 +106,7 @@ class _ResultScreenState extends State<ResultScreen>
                       ? Icons.emoji_events_rounded
                       : Icons.hourglass_empty_rounded,
                   size: 72,
-                  color: allFound ? AppTheme.gold : AppTheme.textSecondary,
+                  color: allFound ? AppTheme.gold : AppTheme.textSecondaryColor(context),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -114,7 +114,7 @@ class _ResultScreenState extends State<ResultScreen>
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w900,
-                    color: allFound ? AppTheme.gold : AppTheme.textPrimary,
+                    color: allFound ? AppTheme.gold : AppTheme.textPrimaryColor(context),
                     letterSpacing: 1,
                   ),
                 ),
@@ -123,9 +123,9 @@ class _ResultScreenState extends State<ResultScreen>
                   allFound
                       ? 'Tüm kelimeleri buldun!'
                       : '${widget.foundCount}/${widget.totalWords} kelime buldun',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
-                    color: AppTheme.textSecondary,
+                    color: AppTheme.textSecondaryColor(context),
                   ),
                 ),
                 const Spacer(),
@@ -172,7 +172,7 @@ class _ResultScreenState extends State<ResultScreen>
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.cardDark,
+        color: AppTheme.cardColor(context),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppTheme.primaryTeal.withValues(alpha: 0.2),
@@ -187,13 +187,13 @@ class _ResultScreenState extends State<ResultScreen>
             '${widget.foundCount}/${widget.totalWords}',
             'Kelime',
           ),
-          Container(width: 1, height: 40, color: AppTheme.cardLight),
+          Container(width: 1, height: 40, color: AppTheme.cardSurface(context)),
           _statItem(
             Icons.timer_outlined,
             timeText,
             'Süre',
           ),
-          Container(width: 1, height: 40, color: AppTheme.cardLight),
+          Container(width: 1, height: 40, color: AppTheme.cardSurface(context)),
           _statItem(
             Icons.speed_rounded,
             widget.config.label,
@@ -212,18 +212,18 @@ class _ResultScreenState extends State<ResultScreen>
         const SizedBox(height: 6),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: AppTheme.textPrimary,
+            color: AppTheme.textPrimaryColor(context),
           ),
         ),
         const SizedBox(height: 2),
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: AppTheme.textSecondary,
+            color: AppTheme.textSecondaryColor(context),
           ),
         ),
       ],
@@ -286,8 +286,8 @@ class _ResultScreenState extends State<ResultScreen>
               );
             },
             style: OutlinedButton.styleFrom(
-              foregroundColor: AppTheme.textSecondary,
-              side: BorderSide(color: AppTheme.textSecondary.withValues(alpha: 0.3)),
+              foregroundColor: AppTheme.textSecondaryColor(context),
+              side: BorderSide(color: AppTheme.textSecondaryColor(context).withValues(alpha: 0.3)),
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),

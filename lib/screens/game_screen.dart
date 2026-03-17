@@ -132,7 +132,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
         IconButton(
           onPressed: () => _showExitDialog(),
           icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
-          color: AppTheme.textSecondary,
+          color: AppTheme.textSecondaryColor(context),
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
         ),
@@ -223,7 +223,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
           child: LinearProgressIndicator(
             value: _gameManager.progress,
             minHeight: 4,
-            backgroundColor: AppTheme.cardLight,
+            backgroundColor: AppTheme.cardSurface(context),
             valueColor:
                 const AlwaysStoppedAnimation<Color>(AppTheme.primaryTeal),
           ),
@@ -236,15 +236,15 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: AppTheme.cardDark,
+        backgroundColor: AppTheme.cardColor(context),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text(
+        title: Text(
           'Oyundan Çık',
-          style: TextStyle(color: AppTheme.textPrimary),
+          style: TextStyle(color: AppTheme.textPrimaryColor(context)),
         ),
-        content: const Text(
+        content: Text(
           'Oyundan çıkmak istediğine emin misin? İlerleme kaydedilmez.',
-          style: TextStyle(color: AppTheme.textSecondary),
+          style: TextStyle(color: AppTheme.textSecondaryColor(context)),
         ),
         actions: [
           TextButton(
@@ -285,7 +285,7 @@ class _HintButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: hasHints
                 ? AppTheme.gold.withValues(alpha: 0.12)
-                : AppTheme.cardLight.withValues(alpha: 0.3),
+                : AppTheme.cardSurface(context).withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: hasHints
@@ -300,7 +300,7 @@ class _HintButton extends StatelessWidget {
               Icon(
                 Icons.lightbulb_rounded,
                 size: 18,
-                color: hasHints ? AppTheme.gold : AppTheme.textSecondary,
+                color: hasHints ? AppTheme.gold : AppTheme.textSecondaryColor(context),
               ),
               const SizedBox(width: 6),
               Text(
@@ -308,7 +308,7 @@ class _HintButton extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: hasHints ? AppTheme.gold : AppTheme.textSecondary,
+                  color: hasHints ? AppTheme.gold : AppTheme.textSecondaryColor(context),
                 ),
               ),
             ],
@@ -341,13 +341,13 @@ class _SoundToggleState extends State<_SoundToggle> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
           decoration: BoxDecoration(
-            color: AppTheme.cardLight.withValues(alpha: 0.3),
+            color: AppTheme.cardSurface(context).withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(
             isOn ? Icons.volume_up_rounded : Icons.volume_off_rounded,
             size: 20,
-            color: isOn ? AppTheme.primaryTeal : AppTheme.textSecondary,
+            color: isOn ? AppTheme.primaryTeal : AppTheme.textSecondaryColor(context),
           ),
         ),
       ),
